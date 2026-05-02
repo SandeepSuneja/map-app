@@ -135,7 +135,7 @@ Specs live next to sources (`*.spec.ts`), including the root component, map page
 - **CI:** [.github/workflows/ci.yml](.github/workflows/ci.yml) — install, test, production build on pushes and pull requests targeting `main` or `master`.
 - **AWS:** [.github/workflows/deploy-aws.yml](.github/workflows/deploy-aws.yml) — on push to `main`/`master` (or manual **workflow_dispatch**), runs tests and build, uploads `dist/map-app/browser` to **S3**, optionally invalidates **CloudFront** if the repo variable `CLOUDFRONT_DISTRIBUTION_ID` is set.
 
-Full setup (OIDC IAM role, bucket, GitHub secrets) is documented in [docs/aws-deployment.md](docs/aws-deployment.md).
+Full setup (IAM user access keys, bucket, GitHub secrets) is documented in [docs/aws-deployment.md](docs/aws-deployment.md).
 
 ---
 
