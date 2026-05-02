@@ -1,0 +1,57 @@
+<div class="loc-suggest position-relative" #comboRoot>
+  <div class="input-group input-group-mw">
+    <span class="input-group-text"><i class="bi" [class]="iconClass()"></i></span>
+    <input
+      [id]="inputId()"
+      class="form-control form-control-mw"
+      type="search"
+      [placeholder]="placeholder()"
+      [disabled]="disabled()"
+      [ngModel]="value()"
+      (ngModelChange)="onValueInput($event)"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+      (keydown)="onKeydown($event)"
+      (keyup.enter)="onEnter()"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      aria-autocomplete="list"
+      [attr.aria-expanded]="dropdownOpen()"
+      [attr.aria-controls]="listboxId()"
+    />
+    @if (showFindButton()) {
+      <button type="button" class="btn btn-mw-primary" (click)="onFindClick()">
+        <span class="d-none d-sm-inline">{{ findLabel() }}</span>
+        <i class="bi bi-arrow-right-short d-sm-none fs-4"></i>
+      </button>
+    }
+  </div>
+  @if (dropdownOpen()) {
+    <ul
+      class="loc-suggest__dropdown list-unstyled mb-0"
+      role="listbox"
+      [id]="listboxId()"
+      [attr.aria-label]="ariaListLabel()"
+    >
+      @for (s of suggestions(); track $index) {
+        <li role="none">
+          <button
+            type="button"
+            class="loc-suggest__option"
+            role="option"
+            (mousedown)="pick(s, $event)"
+          >
+            <span class="loc-suggest__option-main">
+              <i class="bi bi-geo-alt-fill loc-suggest__option-icon" aria-hidden="true"></i>
+              {{ s.title }}
+            </span>
+            @if (s.subtext) {
+              <span class="loc-suggest__option-sub">{{ s.subtext }}</span>
+            }
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</div>

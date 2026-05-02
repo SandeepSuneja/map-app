@@ -1,0 +1,145 @@
+<div class="map-workspace container py-3 py-lg-4">
+  <div class="row g-4 align-items-stretch map-workspace__row">
+    <div class="col-xl-4 col-lg-5 map-workspace__sidebar">
+      <div class="mw-stack">
+        <section class="mw-card mw-card--accent">
+          <div class="mw-card__head">
+            <span class="mw-icon-wrap" aria-hidden="true"><i class="bi bi-search"></i></span>
+            <div>
+              <h2 class="mw-card__title">Search the map</h2>
+              <p class="mw-card__sub mb-0">Jump to any place and drop a pin.</p>
+            </div>
+          </div>
+          <label class="form-label mw-label" for="map-search">Place or address</label>
+          <app-location-suggest-input
+            inputId="map-search"
+            placeholder="Type to see suggestions…"
+            iconClass="bi bi-geo-alt"
+            [showFindButton]="true"
+            findLabel="Find"
+            [(value)]="searchText"
+            (picked)="onMapSearchPicked($event)"
+            (findRequested)="findOnMap()"
+          />
+        </section>
+
+        <section class="mw-card">
+          <div class="mw-card__head">
+            <span class="mw-icon-wrap mw-icon-wrap--soft" aria-hidden="true"><i class="bi bi-signpost-split"></i></span>
+            <div>
+              <h2 class="mw-card__title">Plan a route</h2>
+              <p class="mw-card__sub mb-0">
+                Start, optional stops, then destination. Uses Photon + OSRM (driving).
+              </p>
+            </div>
+          </div>
+
+          <div class="form-check form-switch mw-switch mb-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="use-gps"
+              name="useGps"
+              [(ngModel)]="useGpsAsStart"
+            />
+            <label class="form-check-label" for="use-gps">
+              <i class="bi bi-crosshair me-1" aria-hidden="true"></i>
+              Use my location as start
+            </label>
+          </div>
+
+          <label class="form-label mw-label" for="origin">Start</label>
+          <app-location-suggest-input
+            class="mb-3"
+            inputId="origin"
+            placeholder="Address or place (if not using GPS)"
+            iconClass="bi bi-flag"
+            [disabled]="useGpsAsStart"
+            [(value)]="originText"
+          />
+
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+            <label class="form-label mw-label mb-0">Waypoints</label>
+            <button
+              type="button"
+              class="btn btn-mw-ghost btn-sm"
+              (click)="addWaypoint()"
+              [disabled]="waypoints.length >= maxWaypoints"
+            >
+              <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
+              Add stop
+              @if (waypoints.length > 0) {
+                <span class="ms-1 mw-pill">{{ waypoints.length }}</span>
+              }
+            </button>
+          </div>
+
+          @if (waypoints.length === 0) {
+            <p class="mw-hint mb-3">
+              <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+              No extra stops yet — add as many as you need (up to {{ maxWaypoints }}).
+            </p>
+          } @else {
+            <ul class="list-unstyled mw-waypoint-list mb-3">
+              @for (w of waypoints; track $index; let idx = $index) {
+                <li class="mw-waypoint-row">
+                  <span class="mw-waypoint-badge" aria-hidden="true">{{ idx + 1 }}</span>
+                  <app-location-suggest-input
+                    class="flex-grow-1 min-w-0"
+                    [inputId]="'waypoint-' + idx"
+                    [placeholder]="'Stop ' + (idx + 1)"
+                    iconClass="bi bi-signpost-2"
+                    [value]="waypoints[idx]"
+                    (valueChange)="updateWaypoint(idx, $event)"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-mw-icon"
+                    (click)="removeWaypoint(idx)"
+                    [attr.aria-label]="'Remove waypoint ' + (idx + 1)"
+                  >
+                    <i class="bi bi-trash3" aria-hidden="true"></i>
+                  </button>
+                </li>
+              }
+            </ul>
+          }
+
+          <label class="form-label mw-label" for="destination">Destination</label>
+          <app-location-suggest-input
+            class="mb-3"
+            inputId="destination"
+            placeholder="Final stop"
+            iconClass="bi bi-geo-fill"
+            [(value)]="destinationText"
+          />
+
+          <button type="button" class="btn btn-mw-primary w-100 py-2 fw-semibold" (click)="buildRoute()">
+            <i class="bi bi-map me-2" aria-hidden="true"></i>
+            Build route
+          </button>
+
+          @if (statusMessage(); as msg) {
+            <div class="alert alert-mw mt-3 mb-0" role="status">
+              <i class="bi bi-lightning-charge-fill me-2" aria-hidden="true"></i>
+              {{ msg }}
+            </div>
+          }
+        </section>
+      </div>
+    </div>
+
+    <div class="col-xl-8 col-lg-7 map-workspace__map">
+      <div class="mw-map-frame">
+        <div class="mw-map-frame__chrome">
+          <span class="mw-map-dot"></span>
+          <span class="mw-map-dot"></span>
+          <span class="mw-map-dot"></span>
+          <span class="mw-map-frame__title"><i class="bi bi-layers me-2" aria-hidden="true"></i>Live map</span>
+        </div>
+        <div id="map" class="mw-map" role="application" aria-label="Interactive map"></div>
+      </div>
+    </div>
+  </div>
+</div>

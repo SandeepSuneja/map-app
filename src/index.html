@@ -1,153 +1,34 @@
 <!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>MapWeather</title>
-  <base href="/">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
-
-  <style>
-	 html,
-      body {
-        font-family: Arial, sans-serif;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-</style>
-</head>
-<body>
-  <app-root>Loading...</app-root>
-  
-  <script>
-	var map, curr_marker;
-	var directionsService;  
-    var directionsDisplay; 
-	var infoWindow;
-	
-	function initMap(){
-		directionsService = new google.maps.DirectionsService;
-		directionsDisplay = new google.maps.DirectionsRenderer;
-		infoWindow = new google.maps.InfoWindow;
-		//initialising the map
-		map = new google.maps.Map(document.getElementById('map'),{
-			center: {lat: -34.397, lng: 150.644},
-			zoom: 15
-		});
-		
-		getCurrentLocation();
-		
-		directionsDisplay.setMap(map);
-		
-		setSearchBar(destination);
-		var search1 = setSearchBar(place1);
-		var search2 = setSearchBar(place2);
-		var search3 = setSearchBar(place3);
-		
-		// Event listeners for buttons
-		document.getElementById('submit').addEventListener('click', function() {
-			setRoute(directionsService, directionsDisplay);
-		});
-		document.getElementById('path').addEventListener('click', function(){
-			setRoutes(directionsService, directionsDisplay);
-		});
-		
-	}
-	
-	function getCurrentLocation(){
-		// getting current location
-		if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-			//coordinates for current location
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-			//marker for current location
-			curr_marker = new google.maps.Marker({
-				position: pos,
-				title: 'Current location',
-				animation: google.maps.Animation.DROP,
-			});
-			//infoWindow for current location
-			infoWindow.setPosition(pos);
-			infoWindow.setContent('Your Current location');
-			infoWindow.open(map);
-			
-            map.setCenter(pos);
-			curr_marker.setMap(map);
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
-	}
-	// function for handling error if geolocation service is not working
-	function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
-    }
-	// function to provide search dropdown options
-	function setSearchBar(search_text){
-		var searchBox = new google.maps.places.SearchBox(search_text);
-		searchBox.addListener('places_changed', function() {
-			var places = searchBox.getPlaces();
-			if (places.length == 0) {
-				return;
-			}
-        });
-	}
-	// function to display route between current location and destination
-	function setRoute(Service, Display) {
-        Service.route({
-          origin: curr_marker.position,
-          destination: document.getElementById('destination').value,
-          travelMode: 'DRIVING'
-        }, function(response, status) {
-          if (status === 'OK') {
-            Display.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        });
-    }
-	//function to display route between current location and destination including stopover points
-	function setRoutes(Service, Display){
-		var steps_over = [];
-		steps_over.push({location:document.getElementById('place1').value, stopover:true});
-		steps_over.push({location:document.getElementById('place2').value, stopover:true});
-		steps_over.push({location:document.getElementById('place3').value, stopover:true});
-		steps_over.push({location:document.getElementById('destination').value, stopover:true});
-		console.log(steps_over)
-		Service.route({
-			origin: curr_marker.position,
-			destination: destination.value,
-			waypoints: steps_over,
-			optimizeWaypoints: true,
-			travelMode: 'DRIVING'
-        }, function(response, status) {
-          if (status === 'OK') {
-            Display.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-		});
-	}
-</script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoN4T_u3qL7UyJ0J-scwSoaRdW8f1XmF0&libraries=places&callback=initMap">
-</script>
-  
-</body>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Driftline — maps &amp; routes</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,500&family=Outfit:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </head>
+  <body>
+    <app-root></app-root>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

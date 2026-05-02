@@ -1,0 +1,124 @@
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-header {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--mw-border);
+  background: linear-gradient(165deg, rgba(18, 26, 46, 0.95) 0%, rgba(12, 18, 34, 0.88) 100%);
+  box-shadow: var(--mw-shadow-soft);
+}
+
+.site-header__bg {
+  position: absolute;
+  inset: -50% -15% auto -15%;
+  height: 120%;
+  background: radial-gradient(ellipse at 20% 0%, var(--mw-accent-glow), transparent 50%);
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.site-header__inner {
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+}
+
+.site-header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: inherit;
+  min-width: 0;
+}
+
+.site-brand__mark {
+  display: flex;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 14px var(--mw-accent-glow));
+}
+
+.site-brand__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  min-width: 0;
+}
+
+.site-brand__title {
+  font-family: var(--mw-font-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 3vw, 1.45rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  background: linear-gradient(120deg, #f0f4ff 0%, var(--mw-accent) 45%, var(--mw-warm) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.site-brand__tagline {
+  font-size: 0.72rem;
+  color: var(--mw-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.site-header__accent {
+  flex-shrink: 0;
+  opacity: 0.65;
+}
+
+.site-header__route {
+  width: 120px;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 575.98px) {
+  .site-header__accent {
+    display: none;
+  }
+}
+
+.site-main {
+  flex: 1 0 auto;
+  padding-bottom: 2rem;
+}
+
+.site-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  background: rgba(8, 12, 22, 0.92);
+  border-top: 1px solid var(--mw-border);
+  backdrop-filter: blur(12px);
+}
+
+.text-accent {
+  color: var(--mw-accent) !important;
+}
+
+.text-footer-muted {
+  color: rgba(154, 164, 188, 0.9);
+}
+
+.site-footer a {
+  color: var(--mw-accent);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+  color: #5fe8d4;
+}

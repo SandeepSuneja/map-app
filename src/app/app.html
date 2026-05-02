@@ -1,0 +1,50 @@
+<div class="app-shell">
+  <header class="site-header">
+    <div class="site-header__bg" aria-hidden="true"></div>
+    <div class="container position-relative site-header__inner">
+      <div class="site-header__row">
+        <a routerLink="/" class="site-brand text-decoration-none">
+          <span class="site-brand__mark" aria-hidden="true">
+            <img src="/assets/images/brand-mark.png" width="36" height="36" alt="" />
+          </span>
+          <span class="site-brand__text">
+            <span class="site-brand__title">Driftline</span>
+          </span>
+        </a>
+        <div class="site-header__accent" aria-hidden="true">
+          <svg class="site-header__route" viewBox="0 0 120 32" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="hdrRoute" x1="0" y1="0" x2="120" y2="0" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#3ee0c7" stop-opacity="0.85" />
+                <stop offset="1" stop-color="#ffb86b" stop-opacity="0.75" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M4 24 C 28 4, 52 28, 76 12 S 100 8, 116 18"
+              fill="none"
+              stroke="url(#hdrRoute)"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            <circle cx="4" cy="24" r="3.5" fill="#3ee0c7" />
+            <circle cx="76" cy="12" r="3" fill="#ffb86b" />
+            <circle cx="116" cy="18" r="3.5" fill="#3ee0c7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <router-outlet />
+  </main>
+
+  <footer class="site-footer">
+    <div class="container py-3 py-md-4">
+      <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-2 gap-md-3">
+        <p class="small text-footer-muted mb-0">© {{ year }} Driftline</p>
+        <p class="small text-footer-muted mb-0 text-md-end">Maps &amp; routes for your next detour</p>
+      </div>
+    </div>
+  </footer>
+</div>
